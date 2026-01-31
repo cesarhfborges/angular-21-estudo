@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -139,5 +139,7 @@ import { Router, RouterModule } from '@angular/router';
     `
 })
 export class FooterWidget {
-    constructor(public router: Router) {}
+    public router = inject(Router);
+
+    constructor() {}
 }

@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component} from '@angular/core';
+import {Component, inject } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MessageService, ToastMessageOptions} from 'primeng/api';
 import {ButtonModule} from 'primeng/button';
@@ -26,12 +26,31 @@ import {ToastModule} from 'primeng/toast';
 
                     <div class="font-semibold text-xl mt-4 mb-4">Inline</div>
                     <div class="flex mb-4 gap-1">
-                        <input pInputText [(ngModel)]="username" placeholder="Username" aria-label="username" class="ng-dirty ng-invalid" />
-                        <p-message severity="error" size="small" styleClass="h-auto w-full " [pt]="pt">Username is required</p-message>
+                        <input
+                            pInputText
+                            [(ngModel)]="username"
+                            placeholder="Username"
+                            aria-label="username"
+                            class="ng-dirty ng-invalid"
+                        />
+                        <p-message severity="error" size="small" styleClass="h-auto w-full " [pt]="pt"
+                            >Username is required</p-message
+                        >
                     </div>
                     <div class="flex flex-wrap gap-1">
-                        <input pInputText [(ngModel)]="email" placeholder="Email" aria-label="email" class="ng-dirty ng-invalid" />
-                        <p-message severity="error" size="small" styleClass="flex items-center text-center justify-center h-auto w-11" [pt]="pt">
+                        <input
+                            pInputText
+                            [(ngModel)]="email"
+                            placeholder="Email"
+                            aria-label="email"
+                            class="ng-dirty ng-invalid"
+                        />
+                        <p-message
+                            severity="error"
+                            size="small"
+                            styleClass="flex items-center text-center justify-center h-auto w-11"
+                            [pt]="pt"
+                        >
                             <i class="pi pi-times-circle"></i>
                         </p-message>
                     </div>
@@ -61,7 +80,7 @@ export class MessagesDemo {
 
     email: string | undefined;
 
-    constructor(private service: MessageService) {}
+    private service = inject(MessageService);
 
     pt: any = {
         contentWrapper: 'flex items-center'

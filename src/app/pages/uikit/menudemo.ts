@@ -99,13 +99,18 @@ import { InputIcon, InputIconModule } from 'primeng/inputicon';
                 <div class="card">
                     <div class="font-semibold text-xl mb-4">Overlay Menu</div>
                     <p-menu #menu [popup]="true" [model]="overlayMenuItems"></p-menu>
-                    <button type="button" pButton icon="pi pi-chevron-down" label="Options" (click)="menu.toggle($event)" style="width:auto"></button>
+                    <p-button
+                        icon="pi pi-chevron-down"
+                        label="Options"
+                        (click)="menu.toggle($event)"
+                        [style.width]="'auto'"
+                    ></p-button>
                 </div>
 
                 <div class="card" #anchor>
                     <div class="font-semibold text-xl mb-4">Context Menu</div>
                     Right click to display.
-                    <p-contextmenu [target]="anchor" [model]="contextMenuItems"></p-contextmenu>
+                    <p-contextMenu [target]="anchor" [model]="contextMenuItems"></p-contextMenu>
                 </div>
             </div>
         </div>
@@ -207,7 +212,13 @@ export class MenuDemo {
         }
     ];
     breadcrumbHome = { icon: 'pi pi-home', to: '/' };
-    breadcrumbItems = [{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }];
+    breadcrumbItems = [
+        { label: 'Computer' },
+        { label: 'Notebook' },
+        { label: 'Accessories' },
+        { label: 'Backpacks' },
+        { label: 'Item' }
+    ];
     tieredMenuItems = [
         {
             label: 'Customers',

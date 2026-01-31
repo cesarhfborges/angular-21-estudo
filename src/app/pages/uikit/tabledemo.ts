@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -18,7 +18,8 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { TagModule } from 'primeng/tag';
 import { Customer, CustomerService, Representative } from '@/app/pages/service/customer.service';
 import { Product, ProductService } from '@/app/pages/service/product.service';
-import {ObjectUtils} from "primeng/utils";
+import { ObjectUtils } from 'primeng/utils';
+import { parse } from 'date-fns';
 
 type expandedRows = Record<string, boolean>;
 
@@ -59,12 +60,22 @@ type expandedRows = Record<string, boolean>;
             >
                 <ng-template #caption>
                     <div class="flex justify-between items-center flex-column sm:flex-row">
-                        <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                        <p-button
+                            label="Clear"
+                            class="p-button-outlined mb-2"
+                            icon="pi pi-filter-slash"
+                            (click)="clear(dt1)"
+                        ></p-button>
                         <p-iconfield iconPosition="left" class="ml-auto">
                             <p-inputicon>
                                 <i class="pi pi-search"></i>
                             </p-inputicon>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt1, $event)" placeholder="Search keyword" />
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="onGlobalFilter(dt1, $event)"
+                                placeholder="Search keyword"
+                            />
                         </p-iconfield>
                     </div>
                 </ng-template>
@@ -73,29 +84,59 @@ type expandedRows = Record<string, boolean>;
                         <th style="min-width: 12rem">
                             <div class="flex justify-between items-center">
                                 Name
-                                <p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
+                                <p-columnFilter
+                                    type="text"
+                                    field="name"
+                                    display="menu"
+                                    placeholder="Search by name"
+                                ></p-columnFilter>
                             </div>
                         </th>
                         <th style="min-width: 12rem">
                             <div class="flex justify-between items-center">
                                 Country
-                                <p-columnFilter type="text" field="country.name" display="menu" placeholder="Search by country"></p-columnFilter>
+                                <p-columnFilter
+                                    type="text"
+                                    field="country.name"
+                                    display="menu"
+                                    placeholder="Search by country"
+                                ></p-columnFilter>
                             </div>
                         </th>
                         <th style="min-width: 14rem">
                             <div class="flex justify-between items-center">
                                 Agent
-                                <p-columnFilter field="representative" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                <p-columnFilter
+                                    field="representative"
+                                    matchMode="in"
+                                    display="menu"
+                                    [showMatchModes]="false"
+                                    [showOperator]="false"
+                                    [showAddButton]="false"
+                                >
                                     <ng-template #header>
                                         <div class="px-3 pt-3 pb-0">
                                             <span class="font-bold">Agent Picker</span>
                                         </div>
                                     </ng-template>
                                     <ng-template #filter let-value let-filter="filterCallback">
-                                        <p-multiselect [ngModel]="value" [options]="representatives" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name" styleClass="w-full">
+                                        <p-multiselect
+                                            [ngModel]="value"
+                                            [options]="representatives"
+                                            placeholder="Any"
+                                            (onChange)="filter($event.value)"
+                                            optionLabel="name"
+                                            styleClass="w-full"
+                                        >
                                             <ng-template let-option #item>
                                                 <div class="flex items-center gap-2 w-44">
-                                                    <img [alt]="option.label" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ option.image }}" width="32" />
+                                                    <img
+                                                        [alt]="option.label"
+                                                        src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
+                                                            option.image
+                                                        }}"
+                                                        width="32"
+                                                    />
                                                     <span>{{ option.name }}</span>
                                                 </div>
                                             </ng-template>
@@ -107,13 +148,23 @@ type expandedRows = Record<string, boolean>;
                         <th style="min-width: 10rem">
                             <div class="flex justify-between items-center">
                                 Date
-                                <p-columnFilter type="date" field="date" display="menu" placeholder="mm/dd/yyyy"></p-columnFilter>
+                                <p-columnFilter
+                                    type="date"
+                                    field="date"
+                                    display="menu"
+                                    placeholder="mm/dd/yyyy"
+                                ></p-columnFilter>
                             </div>
                         </th>
                         <th style="min-width: 10rem">
                             <div class="flex justify-between items-center">
                                 Balance
-                                <p-columnFilter type="numeric" field="balance" display="menu" currency="USD"></p-columnFilter>
+                                <p-columnFilter
+                                    type="numeric"
+                                    field="balance"
+                                    display="menu"
+                                    currency="USD"
+                                ></p-columnFilter>
                             </div>
                         </th>
                         <th style="min-width: 12rem">
@@ -121,9 +172,17 @@ type expandedRows = Record<string, boolean>;
                                 Status
                                 <p-columnFilter field="status" matchMode="equals" display="menu">
                                     <ng-template #filter let-value let-filter="filterCallback">
-                                        <p-select [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any" [style]="{ 'min-width': '12rem' }">
+                                        <p-select
+                                            [ngModel]="value"
+                                            [options]="statuses"
+                                            (onChange)="filter($event.value)"
+                                            placeholder="Any"
+                                            [style]="{ 'min-width': '12rem' }"
+                                        >
                                             <ng-template let-option #item>
-                                                <span [class]="'customer-badge status-' + option.value">{{ option.label }}</span>
+                                                <span [class]="'customer-badge status-' + option.value">{{
+                                                    option.label
+                                                }}</span>
                                             </ng-template>
                                         </p-select>
                                     </ng-template>
@@ -133,9 +192,22 @@ type expandedRows = Record<string, boolean>;
                         <th style="min-width: 12rem">
                             <div class="flex justify-between items-center">
                                 Activity
-                                <p-columnFilter field="activity" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                <p-columnFilter
+                                    field="activity"
+                                    matchMode="between"
+                                    display="menu"
+                                    [showMatchModes]="false"
+                                    [showOperator]="false"
+                                    [showAddButton]="false"
+                                >
                                     <ng-template #filter let-filter="filterCallback">
-                                        <p-slider [ngModel]="activityValues" [range]="true" (onSlideEnd)="filter($event.values)" styleClass="m-3" [style]="{ 'min-width': '12rem' }"></p-slider>
+                                        <p-slider
+                                            [ngModel]="activityValues"
+                                            [range]="true"
+                                            (onSlideEnd)="filter($event.values)"
+                                            styleClass="m-3"
+                                            [style]="{ 'min-width': '12rem' }"
+                                        ></p-slider>
                                         <div class="flex items-center justify-between px-2">
                                             <span>{{ activityValues[0] }}</span>
                                             <span>{{ activityValues[1] }}</span>
@@ -159,13 +231,25 @@ type expandedRows = Record<string, boolean>;
                         </td>
                         <td>
                             <div class="flex items-center gap-2">
-                                <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + customer.country.code" width="30" />
+                                <img
+                                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                    [class]="'flag flag-' + customer.country.code"
+                                    width="30"
+                                    alt=""
+                                />
                                 <span>{{ customer.country.name }}</span>
                             </div>
                         </td>
                         <td>
                             <div class="flex items-center gap-2">
-                                <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" style="vertical-align: middle" />
+                                <img
+                                    [alt]="customer.representative.name"
+                                    src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
+                                        customer.representative.image
+                                    }}"
+                                    width="32"
+                                    style="vertical-align: middle"
+                                />
                                 <span class="image-text">{{ customer.representative.name }}</span>
                             </div>
                         </td>
@@ -176,13 +260,25 @@ type expandedRows = Record<string, boolean>;
                             {{ customer.balance | currency: 'USD' : 'symbol' }}
                         </td>
                         <td>
-                            <p-tag [value]="customer.status.toLowerCase()" [severity]="getSeverity(customer.status.toLowerCase())" styleClass="dark:bg-surface-900!" />
+                            <p-tag
+                                [value]="customer.status.toLowerCase()"
+                                [severity]="getSeverity(customer.status.toLowerCase())"
+                                styleClass="dark:bg-surface-900!"
+                            />
                         </td>
                         <td>
-                            <p-progressbar [value]="customer.activity" [showValue]="false" [style]="{ height: '0.5rem' }" />
+                            <p-progressbar
+                                [value]="customer.activity"
+                                [showValue]="false"
+                                [style]="{ height: '0.5rem' }"
+                            />
                         </td>
                         <td class="text-center">
-                            <p-tag [value]="customer.status.toLowerCase()" [severity]="getSeverity(customer.status.toLowerCase())" styleClass="dark:bg-surface-900!" />
+                            <p-tag
+                                [value]="customer.status.toLowerCase()"
+                                [severity]="getSeverity(customer.status.toLowerCase())"
+                                styleClass="dark:bg-surface-900!"
+                            />
                         </td>
                     </tr>
                 </ng-template>
@@ -201,7 +297,13 @@ type expandedRows = Record<string, boolean>;
 
         <div class="card">
             <div class="font-semibold text-xl mb-4">Frozen Columns</div>
-            <p-togglebutton [(ngModel)]="balanceFrozen" [onIcon]="'pi pi-lock'" offIcon="pi pi-lock-open" [onLabel]="'Balance'" offLabel="Balance" />
+            <p-togglebutton
+                [(ngModel)]="balanceFrozen"
+                [onIcon]="'pi pi-lock'"
+                offIcon="pi pi-lock-open"
+                [onLabel]="'Balance'"
+                offLabel="Balance"
+            />
 
             <p-table [value]="customers2" [scrollable]="true" scrollHeight="400px" styleClass="mt-4">
                 <ng-template #header>
@@ -214,7 +316,15 @@ type expandedRows = Record<string, boolean>;
                         <th style="min-width:200px">Status</th>
                         <th style="min-width:200px">Activity</th>
                         <th style="min-width:200px">Representative</th>
-                        <th style="min-width:200px" alignFrozen="right" pFrozenColumn [frozen]="balanceFrozen" [ngClass]="{ 'font-bold': balanceFrozen }">Balance</th>
+                        <th
+                            style="min-width:200px"
+                            alignFrozen="right"
+                            pFrozenColumn
+                            [frozen]="balanceFrozen"
+                            [ngClass]="{ 'font-bold': balanceFrozen }"
+                        >
+                            Balance
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template #body let-customer>
@@ -227,7 +337,12 @@ type expandedRows = Record<string, boolean>;
                         <td>{{ customer.status }}</td>
                         <td>{{ customer.activity }}</td>
                         <td>{{ customer.representative.name }}</td>
-                        <td alignFrozen="right" pFrozenColumn [frozen]="balanceFrozen" [ngClass]="{ 'font-bold': balanceFrozen }">
+                        <td
+                            alignFrozen="right"
+                            pFrozenColumn
+                            [frozen]="balanceFrozen"
+                            [ngClass]="{ 'font-bold': balanceFrozen }"
+                        >
                             {{ formatCurrency(customer.balance) }}
                         </td>
                     </tr>
@@ -237,9 +352,18 @@ type expandedRows = Record<string, boolean>;
 
         <div class="card">
             <div class="font-semibold text-xl mb-4">Row Expansion</div>
-            <p-table [value]="products" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" [expandedRowKeys]="expandedRows">
+            <p-table
+                [value]="products"
+                dataKey="id"
+                [tableStyle]="{ 'min-width': '60rem' }"
+                [expandedRowKeys]="expandedRows"
+            >
                 <ng-template #caption>
-                    <button pButton icon="pi pi-fw {{ isExpanded ? 'pi-minus' : 'pi-plus' }}" label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}" (click)="expandAll()"></button>
+                    <p-button
+                        icon="pi pi-fw {{ isExpanded ? 'pi-minus' : 'pi-plus' }}"
+                        label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}"
+                        (click)="expandAll()"
+                    ></p-button>
                     <div class="flex table-header"></div>
                 </ng-template>
                 <ng-template #header>
@@ -256,11 +380,24 @@ type expandedRows = Record<string, boolean>;
                 <ng-template #body let-product let-expanded="expanded">
                     <tr>
                         <td>
-                            <p-button type="button" pRipple [pRowToggler]="product" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+                            <p-button
+                                type="button"
+                                pRipple
+                                [pRowToggler]="product"
+                                [text]="true"
+                                [rounded]="true"
+                                [plain]="true"
+                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                            />
                         </td>
                         <td>{{ product.name }}</td>
                         <td>
-                            <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" width="50" class="shadow-lg" />
+                            <img
+                                [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image"
+                                [alt]="product.name"
+                                width="50"
+                                class="shadow-lg"
+                            />
                         </td>
                         <td>{{ product.price | currency: 'USD' }}</td>
                         <td>{{ product.category }}</td>
@@ -268,7 +405,10 @@ type expandedRows = Record<string, boolean>;
                             <p-rating [ngModel]="product.rating" [readonly]="true" />
                         </td>
                         <td>
-                            <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" />
+                            <p-tag
+                                [value]="product.inventoryStatus"
+                                [severity]="getSeverity(product.inventoryStatus)"
+                            />
                         </td>
                     </tr>
                 </ng-template>
@@ -328,7 +468,16 @@ type expandedRows = Record<string, boolean>;
 
         <div class="card">
             <div class="font-semibold text-xl mb-4">Grouping</div>
-            <p-table [value]="customers3" sortField="representative.name" sortMode="single" [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" groupRowsBy="representative.name" [tableStyle]="{ 'min-width': '60rem' }">
+            <p-table
+                [value]="customers3"
+                sortField="representative.name"
+                sortMode="single"
+                [scrollable]="true"
+                scrollHeight="400px"
+                rowGroupMode="subheader"
+                groupRowsBy="representative.name"
+                [tableStyle]="{ 'min-width': '60rem' }"
+            >
                 <ng-template #header>
                     <tr>
                         <th>Name</th>
@@ -342,7 +491,14 @@ type expandedRows = Record<string, boolean>;
                     <tr pRowGroupHeader>
                         <td colspan="5">
                             <div class="flex items-center gap-2">
-                                <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" style="vertical-align: middle" />
+                                <img
+                                    [alt]="customer.representative.name"
+                                    src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
+                                        customer.representative.image
+                                    }}"
+                                    width="32"
+                                    style="vertical-align: middle"
+                                />
                                 <span class="font-bold">{{ customer.representative.name }}</span>
                             </div>
                         </td>
@@ -350,7 +506,9 @@ type expandedRows = Record<string, boolean>;
                 </ng-template>
                 <ng-template #groupfooter let-customer>
                     <tr>
-                        <td colspan="5" class="text-right font-bold pr-12">Total Customers: {{ calculateCustomerTotal(customer.representative.name) }}</td>
+                        <td colspan="5" class="text-right font-bold pr-12">
+                            Total Customers: {{ calculateCustomerTotal(customer.representative.name) }}
+                        </td>
                     </tr>
                 </ng-template>
                 <ng-template #body let-customer let-rowIndex="rowIndex">
@@ -360,7 +518,12 @@ type expandedRows = Record<string, boolean>;
                         </td>
                         <td>
                             <div class="flex items-center gap-2">
-                                <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + customer.country.code" style="width: 20px" />
+                                <img
+                                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                    [class]="'flag flag-' + customer.country.code"
+                                    style="width: 20px"
+                                    alt="flag_placeholder"
+                                />
                                 <span>{{ customer.country.name }}</span>
                             </div>
                         </td>
@@ -419,18 +582,19 @@ export class TableDemo implements OnInit {
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(
-        private customerService: CustomerService,
-        private productService: ProductService
-    ) {}
+    private customerService = inject(CustomerService);
+    private productService = inject(ProductService);
 
     ngOnInit() {
         this.customerService.getCustomersLarge().then((customers) => {
             this.customers1 = customers;
             this.loading = false;
 
-            // @ts-ignore
-            this.customers1.forEach((customer) => (customer.date = new Date(customer.date)));
+            this.customers1.forEach(customer => {
+                if (typeof customer.date === 'string') {
+                    customer.date = parse(customer.date, 'yyyy-MM-dd', new Date());
+                }
+            });
         });
         this.customerService.getCustomersMedium().then((customers) => (this.customers2 = customers));
         this.customerService.getCustomersLarge().then((customers) => (this.customers3 = customers));
@@ -487,7 +651,7 @@ export class TableDemo implements OnInit {
     }
 
     expandAll() {
-        if(ObjectUtils.isEmpty(this.expandedRows)) {
+        if (ObjectUtils.isEmpty(this.expandedRows)) {
             this.expandedRows = this.products.reduce(
                 (acc, p) => {
                     if (p.id) {
@@ -499,9 +663,8 @@ export class TableDemo implements OnInit {
             );
             this.isExpanded = true;
         } else {
-            this.collapseAll()
+            this.collapseAll();
         }
-
     }
 
     collapseAll() {
