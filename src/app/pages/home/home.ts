@@ -5,7 +5,6 @@ import { JsonPipe } from '@angular/common';
 import { Highlight } from 'ngx-highlightjs';
 import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
 import { Select } from 'primeng/select';
-import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ToggleButton } from 'primeng/togglebutton';
 
 interface IAudio {
@@ -15,17 +14,7 @@ interface IAudio {
 
 @Component({
     selector: 'app-home',
-    imports: [
-        FormsModule,
-        Card,
-        JsonPipe,
-        Highlight,
-        HighlightLineNumbers,
-        Select,
-        ReactiveFormsModule,
-        ToggleSwitch,
-        ToggleButton
-    ],
+    imports: [FormsModule, Card, JsonPipe, Highlight, HighlightLineNumbers, Select, ReactiveFormsModule, ToggleButton],
     templateUrl: './home.html',
     styleUrl: './home.scss'
 })
