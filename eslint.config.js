@@ -4,6 +4,18 @@ export default {
     plugins: ['prettier'],
     extends: ['prettier'],
     rules: {
+        "max-len": [
+            "error",
+            {
+                "code": 120,
+                "tabWidth": 2,
+                "ignoreComments": true,
+                "ignoreUrls": true,
+                "ignoreStrings": true,
+                "ignoreTemplateLiterals": true,
+                "ignoreRegExpLiterals": true
+            }
+        ],
         'padding-line-between-statements': [
             'error',
             { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },

@@ -1,0 +1,107 @@
+<form [formGroup]="form">
+    <div class="flex gap-4 h-full">
+        <!-- 77% - Tabela -->
+        <div class="w-[40%]">
+            <p-card class="w-full mb-3">
+                <div class="grid grid-cols-1">
+                    <div class="grow flex items-center justify-between gap-4 py-4 px-4">
+                        <span class="w-[90px]">Origem: </span>
+                        <p-select
+                            [options]="audioCardAvaliables"
+                            formControlName="audioInput"
+                            [showClear]="true"
+                            optionLabel="name"
+                            placeholder="Select a City"
+                            size="large"
+                            fluid
+                            [disabled]="form.get('enabled')?.value"
+                        >
+                            <ng-template #selectedItem let-selectedOption>
+                                <div class="flex items-center gap-2">
+                                    <i class="pi pi-volume-up"></i>
+                                    <div>{{ selectedOption.name }}</div>
+                                </div>
+                            </ng-template>
+                            <ng-template #item let-option>
+                                <div class="flex items-center gap-2">
+                                    <i class="pi pi-volume-up"></i>
+                                    <div>{{ option.name }}</div>
+                                </div>
+                            </ng-template>
+                        </p-select>
+                    </div>
+                    <div class="grow flex items-center justify-between gap-4 py-4 px-4">
+                        <span class="w-[90px]">Destino: </span>
+                        <p-select
+                            [options]="audioCardAvaliables"
+                            formControlName="audioOutput"
+                            [showClear]="true"
+                            optionLabel="name"
+                            placeholder="Select a City"
+                            size="large"
+                            fluid
+                            [disabled]="form.get('enabled')?.value"
+                        >
+                            <ng-template #selectedItem let-selectedOption>
+                                <div class="flex items-center gap-2">
+                                    <i class="pi pi-volume-up"></i>
+                                    <div>{{ selectedOption.name }}</div>
+                                </div>
+                            </ng-template>
+                            <ng-template #item let-option>
+                                <div class="flex items-center gap-2">
+                                    <i class="pi pi-volume-up"></i>
+                                    <div>{{ option.name }}</div>
+                                </div>
+                            </ng-template>
+                        </p-select>
+                    </div>
+                    <div class="grow flex items-center justify-between gap-4 py-4 px-4">
+                        <span class="w-[90px]">Status: </span>
+                        <p-toggleButton formControlName="enabled" onLabel="On" offLabel="Off" size="large" fluid />
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+        <!-- 33% - Simulação -->
+        <!--    <div class="w-[33%]">-->
+        <!--        <p-card class="w-full mb-3">-->
+        <!--            <div class="grid grid-cols-1">-->
+        <!--                <div class="grow flex items-center justify-between gap-4 py-4 px-4">-->
+        <!--                    <span>Rodada: </span>-->
+        <!--                    <p-inputNumber-->
+        <!--                        [(ngModel)]="selectedRound"-->
+        <!--                        buttonLayout="horizontal"-->
+        <!--                        [showButtons]="true"-->
+        <!--                        [min]="1"-->
+        <!--                        [max]="38"-->
+        <!--                        [useGrouping]="false"-->
+        <!--                        [inputStyle]="{ 'text-align': 'center' }"-->
+        <!--                    >-->
+        <!--                        <ng-template #incrementbuttonicon>-->
+        <!--                            <span class="pi pi-plus"></span>-->
+        <!--                        </ng-template>-->
+        <!--                        <ng-template #decrementbuttonicon>-->
+        <!--                            <span class="pi pi-minus"></span>-->
+        <!--                        </ng-template>-->
+        <!--                    </p-inputNumber>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </p-card>-->
+        <!--        <app-rodada-->
+        <!--            [ngModel]="matchesOfSelectedRound"-->
+        <!--        ></app-rodada>-->
+        <!--    </div>-->
+    </div>
+</form>
+<pre>
+    <code
+        class="bg-[#2E3440] border-l-5 border-[#6f7b93] rounded text-xs whitespace-pre-wrap break-words overflow-auto"
+        [highlight]="form.value | json"
+        [singleLine]="false"
+        [ignoreIllegals]="true"
+        language="json"
+        lineNumbers
+    ></code>
+</pre>

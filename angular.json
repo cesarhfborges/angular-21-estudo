@@ -32,7 +32,10 @@
                             "src/assets/styles.scss",
                             "src/assets/tailwind.css"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "allowedCommonJsDependencies": [
+                            "highlight.js"
+                        ]
                     },
                     "configurations": {
                         "production": {
