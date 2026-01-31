@@ -14,16 +14,19 @@ import { Component } from '@angular/core';
                 Angular v21 with PrimeNG v21. In case CLI is not installed already, use the command below to set it up.
             </p>
             <pre class="app-code">
-<code>npm install -g &#64;angular/cli</code></pre>
+                <code>npm install -g &#64;angular/cli</code></pre>
             <p class="text-lg mb-4">
                 Once CLI is ready in your system, extract the contents of the zip file distribution, cd to the
                 directory, install the libraries from npm and then execute "ng serve" to run the application in your
                 local environment.
             </p>
             <pre class="app-code">
-<code>git clone https://github.com/primefaces/sakai-ng
-npm install
-ng serve</code></pre>
+                <code>
+                    git clone https://github.com/primefaces/sakai-ng
+                npm install
+                ng serve
+                </code>
+            </pre>
 
             <p class="text-lg mb-4">
                 The application should run at
