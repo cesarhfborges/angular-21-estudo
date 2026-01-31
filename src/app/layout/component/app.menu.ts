@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -11,14 +11,14 @@ import { AppMenuitem } from './app.menuitem';
     template: `<ul class="layout-menu">
         @for (item of model; track item.label) {
             @if (!item.separator) {
-                <li app-menuitem [item]="item" [root]="true"></li>
+                <app-menuitem [item]="item" [root]="true"></app-menuitem>
             } @else {
                 <li class="menu-separator"></li>
             }
         }
-    </ul> `,
+    </ul> `
 })
-export class AppMenu {
+export class AppMenu implements OnInit {
     model: MenuItem[] = [];
 
     ngOnInit() {
@@ -32,7 +32,12 @@ export class AppMenu {
                 items: [
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
-                    { label: 'Button', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon', routerLink: ['/uikit/button'] },
+                    {
+                        label: 'Button',
+                        icon: 'pi pi-fw pi-mobile',
+                        class: 'rotated-icon',
+                        routerLink: ['/uikit/button']
+                    },
                     { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
                     { label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
                     { label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/uikit/tree'] },

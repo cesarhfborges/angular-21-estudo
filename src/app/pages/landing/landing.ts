@@ -23,7 +23,7 @@ import { FooterWidget } from './components/footerwidget';
                 <features-widget />
                 <highlights-widget />
                 <pricing-widget />
-                <footer-widget />
+                <app-footer-widget />
             </div>
         </div>
     `

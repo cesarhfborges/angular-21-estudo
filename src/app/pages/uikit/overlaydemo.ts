@@ -144,21 +144,21 @@ import {Product, ProductService} from '@/app/pages/service/product.service';
     providers: [ConfirmationService, MessageService, ProductService]
 })
 export class OverlayDemo implements OnInit {
-    display: boolean = false;
+    display = false;
 
     products: Product[] = [];
 
-    visibleLeft: boolean = false;
+    visibleLeft = false;
 
-    visibleRight: boolean = false;
+    visibleRight = false;
 
-    visibleTop: boolean = false;
+    visibleTop = false;
 
-    visibleBottom: boolean = false;
+    visibleBottom = false;
 
-    visibleFull: boolean = false;
+    visibleFull = false;
 
-    displayConfirmation: boolean = false;
+    displayConfirmation = false;
 
     selectedProduct!: Product;
 

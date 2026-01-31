@@ -63,9 +63,9 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
     `
 })
 export class Login {
-    email: string = '';
+    email = '';
 
-    password: string = '';
+    password = '';
 
-    checked: boolean = false;
+    checked = false;
 }
